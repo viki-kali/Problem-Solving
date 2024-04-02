@@ -1,0 +1,178 @@
+┌──(viki㉿viki)-[/media/…/My_Home/Working/Problem_Solving/3 File Concept]
+└─$ cat head.h               
+#include<iostream>
+using namespace std;
+class Student
+{
+   public:
+      Student();
+      void getData();
+      void displayData();
+      friend class A_List;
+   private:
+      string name;
+      int age;
+      float CGPA;
+      long int phno;
+};
+class A_List
+{
+   public:
+      A_List();
+      int insertAtFirst(Student);
+      int isFull();
+      int isEmpty();
+      void display();
+   private:
+      Student *arr;
+      int size;
+      int capacity;
+};
+                                                                                                                                                                       
+┌──(viki㉿viki)-[/media/…/My_Home/Working/Problem_Solving/3 File Concept]
+└─$ cat imp.cpp 
+#include"head.h"
+Student::Student()
+{
+   name="Abi";
+   age=12;
+   CGPA = 8.7;
+   phno=9876543210;
+}
+void Student::getData()
+{
+   cout<<"Enter name,age, CPGA,phno for a student:";
+   cin>>name>>age>>CGPA>>phno;
+}
+void Student::displayData()
+{
+  /* cout<<"Name is: "<<name<<endl;
+   cout<<"Age is: "<<age<<endl;
+   cout<<"CGPA is: "<<CGPA<<endl;
+   cout<<"Phone Number is: "<<phno<<endl;*/
+   cout<<name<<"\t"<<age<<"\t"<<CGPA<<"\t"<<phno<<"\n";
+}
+A_List::A_List()
+{
+   size =10;
+   capacity=0;
+   arr= new Student[size];
+}
+int A_List::isFull()
+{
+   if(size==capacity)
+      return 1; //List is full
+   else
+      return 0;
+}
+int A_List::isEmpty()
+{
+   if(capacity==0)
+      return 1; //List is empty
+   else
+      return 0;
+}
+int A_List::insertAtFirst(Student s)
+{
+   if(!isFull()) //Insertion possible
+   {
+      if(isEmpty())
+      {
+         arr[0] = s;
+         capacity++;
+      }
+      else //Shift Down
+      {
+         for(int i=capacity;i>0;i--)
+         {
+            arr[i]=arr[i-1];
+         }
+         arr[0] = s;
+         capacity++;
+      }
+      return 1;
+   }
+   else // List is full
+   {
+      return 0; //Insertion not possible
+   }
+}
+void A_List::display()
+{
+        for(int i=0;i<capacity;i++)
+        {
+                arr[i].displayData();
+        }
+}
+                                                                                                                                                                       
+┌──(viki㉿viki)-[/media/…/My_Home/Working/Problem_Solving/3 File Concept]
+└─$ cat app.cpp 
+#include"head.h"
+int main()
+{
+   A_List obj;
+   int ch;
+   do
+   {
+        cout<<"Enter 1 for insertAtFirst\n2 for display\n";
+        cin>>ch;
+        switch(ch)
+        {
+           case 1:
+              {
+                 Student s;
+                 s.getData();
+                 int res = obj.insertAtFirst(s);
+                 if(res ==1)
+                    cout<<"Insertion successful\n";
+                 else
+                    cout<<"List is full. Insertion at first fails\n";
+              }
+              break;
+           case 2:
+              cout<<"Name\tAge\tCGPA\tPhoneNo.\n";
+              obj.display();
+              break;
+           default:
+              cout<<"Invalid choice\n";
+        }
+   }while(ch>=1 && ch<=2);
+}
+
+                                                                                                                                                                       
+┌──(viki㉿viki)-[/media/…/My_Home/Working/Problem_Solving/3 File Concept]
+└─$ cat makefile             
+exe:imp.o app.o
+        g++ imp.o app.o -o exe
+imp.o:imp.cpp head.h
+        g++ imp.cpp -c
+app.o:app.cpp head.h
+        g++ app.cpp -c
+                                                                                                                                                                       
+┌──(viki㉿viki)-[/media/…/My_Home/Working/Problem_Solving/3 File Concept]
+└─$ make
+make: 'exe' is up to date.
+                                                                                                                                                                       
+┌──(viki㉿viki)-[/media/…/My_Home/Working/Problem_Solving/3 File Concept]
+└─$ ./exe 
+Enter 1 for insertAtFirst
+2 for display
+1
+Enter name,age, CPGA,phno for a student:v
+1
+2
+3
+Insertion successful
+Enter 1 for insertAtFirst
+2 for display
+2
+Name    Age     CGPA    PhoneNo.
+v       1       2       3
+Enter 1 for insertAtFirst
+2 for display
+3
+Invalid choice
+                                                                                                                                                                       
+┌──(viki㉿viki)-[/media/…/My_Home/Working/Problem_Solving/3 File Concept]
+└─$ 
+
