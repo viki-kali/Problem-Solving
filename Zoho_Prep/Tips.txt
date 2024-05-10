@@ -1,0 +1,9 @@
+leet code interview star
+
+carrier ride for apti
+
+sliding window, binary search, arrays with sorting
+no trees
+
+basic backtracking
+
